@@ -1,24 +1,31 @@
 package com.shong.hilt_mvvm_aac.data
 
-import android.content.Context
-import androidx.room.Room
-import com.shong.hilt_mvvm_aac.data.db.AppDatabase
-import com.shong.hilt_mvvm_aac.handler.LoggerDataSource
-import com.shong.hilt_mvvm_aac.handler.LoggerLocalDataSource
+import com.shong.hilt_mvvm_aac.data.db.AppLog
+import com.shong.hilt_mvvm_aac.data.db.LogDao
+import com.shong.hilt_mvvm_aac.handler.LoggerInMemory
 
-class Repository constructor(private val context: Context) {
-    private var logsDatabase : AppDatabase
-    private lateinit var loggerDB: LoggerDataSource
-
-    init {
-        logsDatabase = Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "logging.db"
-        ).build()
-
-        loggerDB = LoggerLocalDataSource(logsDatabase.logDao())
+class Repository constructor(val logDao: LogDao, val loggerInMemory: LoggerInMemory) {
+    private val TAG = this::class.java.simpleName + "_sHong"
+    suspend fun addLog(msg: String) {
+        logDao.insertAllDB(
+            AppLog(
+                msg,
+                System.currentTimeMillis()
+            )
+        )
     }
 
+    suspend fun getAllLogs() = logDao.getAllDB()
 
+    suspend fun removeLogs() {
+        logDao.nukeTableDB()
+    }
+
+    fun addLogMemory(msg: String){
+        loggerInMemory.addLog(msg)
+    }
+
+    fun getAllLogsMemory() = loggerInMemory.getAllLogs()
+
+    fun removeLogsMemory(){ loggerInMemory.removeLogs() }
 }

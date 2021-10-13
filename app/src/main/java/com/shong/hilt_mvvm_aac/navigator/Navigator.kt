@@ -5,6 +5,6 @@ enum class LogTypes {
     Memory
 }
 
-interface BottomSheetNavigator {
+interface Navigator {
     fun navigateTo(logType: LogTypes)
 }

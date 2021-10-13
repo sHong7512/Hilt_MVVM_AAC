@@ -1,40 +1,34 @@
 package com.shong.hilt_mvvm_aac.ui
 
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import com.shong.hilt_mvvm_aac.data.db.AppDatabase
 import com.shong.hilt_mvvm_aac.databinding.FragmentBottomsheetBinding
-import com.shong.hilt_mvvm_aac.handler.LoggerDataSource
-import com.shong.hilt_mvvm_aac.handler.LoggerInMemoryDataSource
-import com.shong.hilt_mvvm_aac.handler.LoggerLocalDataSource
 import com.shong.hilt_mvvm_aac.navigator.LogTypes
-import com.shong.hilt_mvvm_aac.util.LogDateFormatter
 import com.shong.hilt_mvvm_aac.util.LogsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class LogScreenBSFragment constructor(private val logType: LogTypes)  : BottomSheetDialogFragment() {
+@AndroidEntryPoint
+class LogScreenBSFragment constructor(private val logType: LogTypes) : BottomSheetDialogFragment() {
     private val TAG = this::class.java.simpleName + "_sHong"
-    private lateinit var binding : FragmentBottomsheetBinding
-    private lateinit var logger: LoggerDataSource
-    private lateinit var dateFormatter: LogDateFormatter
+    private val viewModel: FragViewModel by viewModels()
 
-    private lateinit var logsDatabase : AppDatabase
+    private lateinit var binding: FragmentBottomsheetBinding
+    @Inject lateinit var logsAdapter: LogsAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,9 +36,15 @@ class LogScreenBSFragment constructor(private val logType: LogTypes)  : BottomSh
         savedInstanceState: Bundle?
     ): View? {
         super.onCreateView(inflater, container, savedInstanceState)
-        binding = FragmentBottomsheetBinding.inflate(layoutInflater,container,false)
+        binding = FragmentBottomsheetBinding.inflate(layoutInflater, container, false)
 
         binding.logRV.setHasFixedSize(true)
+        makeObserver()
+
+        when (logType) {
+            LogTypes.DB -> viewModel.getLogDB()
+            LogTypes.Memory -> viewModel.getLogMemory()
+        }
 
         return binding.root
     }
@@ -68,32 +68,20 @@ class LogScreenBSFragment constructor(private val logType: LogTypes)  : BottomSh
 
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog?.show()
+
+        binding.logRV.apply {
+            adapter = logsAdapter
+            layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-        logsDatabase = Room.databaseBuilder(
-            context,
-            AppDatabase::class.java,
-            "logging.db"
-        ).build()
-
-        when(logType){
-            LogTypes.DB -> logger = LoggerLocalDataSource(logsDatabase.logDao())
-            LogTypes.Memory -> logger = LoggerInMemoryDataSource()
-        }
-        dateFormatter = LogDateFormatter()
-    }
-
-    override fun onResume() {
-        super.onResume()
-
-        logger.getAllLogs { logs ->
-            binding.logRV.adapter = LogsAdapter(logs, dateFormatter)
-            binding.logRV.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-            Log.d(TAG,"memory hash <${logger.hashCode()}> : ${logs}")
-        }
+    private fun makeObserver() {
+        viewModel.getDBLD.observe(this, { logs ->
+            logsAdapter.updateLogsData(logs)
+        })
+        viewModel.getMemoryLD.observe(this, { logs ->
+            logsAdapter.updateLogsData(logs)
+        })
     }
 
 }

@@ -6,14 +6,18 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.shong.hilt_mvvm_aac.R
-import com.shong.hilt_mvvm_aac.data.db.entity.Log
+import com.shong.hilt_mvvm_aac.data.db.AppLog
+import dagger.hilt.android.scopes.FragmentScoped
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LogsAdapter(
-    private val logsDataSet: List<Log>,
-    private val daterFormatter: LogDateFormatter
-) : RecyclerView.Adapter<LogsAdapter.LogsViewHolder>() {
+@FragmentScoped
+class LogsAdapter @Inject constructor()
+    : RecyclerView.Adapter<LogsAdapter.LogsViewHolder>() {
 
+    @Inject lateinit var dateFormatter: LogDateFormatter
     class LogsViewHolder(val textView: TextView) : RecyclerView.ViewHolder(textView)
+    private var logsDataSet: List<AppLog> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LogsViewHolder {
         return LogsViewHolder(
@@ -29,6 +33,12 @@ class LogsAdapter(
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: LogsViewHolder, position: Int) {
         val log = logsDataSet[position]
-        holder.textView.text = "${log.msg}\n\t${daterFormatter.formatDate(log.timestamp)}"
+        holder.textView.text = "${log.msg}\n\t${dateFormatter.formatDate(log.timestamp)}"
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun updateLogsData(logs: List<AppLog>){
+        this.logsDataSet = logs
+        notifyDataSetChanged()
     }
 }
