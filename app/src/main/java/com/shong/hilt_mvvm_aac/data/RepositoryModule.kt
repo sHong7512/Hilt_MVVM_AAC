@@ -40,8 +40,8 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideRepository(logDao: LogDao, loggerInMemory: LoggerInMemory) : Repository{
-        return Repository(logDao, loggerInMemory)
+    fun provideRepository(logDao: LogDao, loggerInMemory: LoggerInMemory, @ApplicationContext context: Context) : Repository{
+        return Repository(logDao, loggerInMemory, context)
     }
 
 }

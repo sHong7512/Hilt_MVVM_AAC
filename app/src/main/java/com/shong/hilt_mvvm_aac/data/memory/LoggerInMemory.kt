@@ -1,12 +1,7 @@
 package com.shong.hilt_mvvm_aac.handler
 
 import com.shong.hilt_mvvm_aac.data.db.AppLog
-import dagger.Provides
-import dagger.hilt.android.scopes.ActivityScoped
-import dagger.hilt.android.scopes.ViewModelScoped
-import java.util.LinkedList
-import javax.inject.Inject
-import javax.inject.Singleton
+import java.util.*
 
 class LoggerInMemory constructor(){
     private val logs = LinkedList<AppLog>()

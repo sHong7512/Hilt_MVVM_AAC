@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.shong.hilt_mvvm_aac.data.Repository
 import com.shong.hilt_mvvm_aac.data.db.AppLog
-import com.shong.hilt_mvvm_aac.handler.LoggerInMemory
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

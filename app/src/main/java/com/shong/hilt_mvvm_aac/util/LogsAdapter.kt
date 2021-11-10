@@ -9,7 +9,6 @@ import com.shong.hilt_mvvm_aac.R
 import com.shong.hilt_mvvm_aac.data.db.AppLog
 import dagger.hilt.android.scopes.FragmentScoped
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @FragmentScoped
 class LogsAdapter @Inject constructor()

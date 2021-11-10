@@ -5,9 +5,8 @@ package com.shong.hilt_mvvm_aac.util
 import android.annotation.SuppressLint
 import dagger.hilt.android.scopes.FragmentScoped
 import java.text.SimpleDateFormat
-import java.util.Date
+import java.util.*
 import javax.inject.Inject
-import javax.inject.Singleton
 
 @FragmentScoped
 class LogDateFormatter @Inject constructor() {

@@ -1,17 +1,16 @@
 package com.shong.hilt_mvvm_aac.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import com.shong.hilt_mvvm_aac.R
 import com.shong.hilt_mvvm_aac.databinding.ActivityMainBinding
 import com.shong.hilt_mvvm_aac.handler.LoggerInMemory
-import com.shong.hilt_mvvm_aac.navigator.Navigator
-import com.shong.hilt_mvvm_aac.navigator.BottomSheetNavigatorImpl
 import com.shong.hilt_mvvm_aac.navigator.LogTypes
+import com.shong.hilt_mvvm_aac.navigator.Navigator
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
