@@ -5,6 +5,7 @@ enum class LogTypes {
     Memory
 }
 
+
 interface Navigator {
     fun navigateTo(logType: LogTypes)
 }

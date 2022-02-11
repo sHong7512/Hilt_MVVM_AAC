@@ -31,21 +31,20 @@ class MainActivity : AppCompatActivity() {
         binding.mainVM = viewModel
         binding.lifecycleOwner = this
 
-        binding.logMakeButton.setOnClickListener {
-            viewModel.addLogDB("Hello sHong!")
-            viewModel.addLogMemory("Hello sHong!")
-        }
-        binding.logDeleteButton.setOnClickListener {
-            viewModel.removeLogDB()
-            viewModel.removeLogMemory()
-        }
-        binding.logDBButton.setOnClickListener {
-            navigator.navigateTo(LogTypes.DB)
-        }
-        binding.logMemoryButton.setOnClickListener {
-            navigator.navigateTo(LogTypes.Memory)
+        makeObserver()
+
+        binding.run{
+            logDBButton.setOnClickListener {
+                navigator.navigateTo(LogTypes.DB)
+            }
+            logMemoryButton.setOnClickListener {
+                navigator.navigateTo(LogTypes.Memory)
+            }
         }
 
+    }
+
+    fun makeObserver(){
         viewModel.updateDBIsOkLD.observe(this, Observer {
             Log.d(TAG,"DB update complete? $it")
         })

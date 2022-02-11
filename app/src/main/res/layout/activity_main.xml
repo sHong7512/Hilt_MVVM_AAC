@@ -5,6 +5,7 @@
     tools:context=".ui.MainActivity">
 
     <data>
+
         <variable
             name="mainVM"
             type="com.shong.hilt_mvvm_aac.ui.MainViewModel" />
@@ -18,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:text="MVVM-AAC Hilt Example"
+            android:text="@{mainVM.titleStr}"
             android:textColor="@color/black"
             android:textSize="25dp"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -31,6 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="100dp"
             android:backgroundTint="#009000"
+            android:onClick="@{()->mainVM.logMake()}"
             android:text="Log make with timestamp"
             app:layout_constraintBottom_toTopOf="@id/logDBButton"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -41,10 +43,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#C00000"
+            android:onClick="@{()->mainVM.logDel()}"
             android:text="Delete All Logs"
-            app:layout_constraintTop_toBottomOf="@id/logMakeButton"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logMakeButton" />
 
         <Button
             android:id="@+id/logDBButton"
