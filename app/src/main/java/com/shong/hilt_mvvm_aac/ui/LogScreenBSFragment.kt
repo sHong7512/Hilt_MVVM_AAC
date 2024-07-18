@@ -24,7 +24,6 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class LogScreenBSFragment constructor(private val logType: LogTypes) : BottomSheetDialogFragment() {
-    private val TAG = this::class.java.simpleName + "_sHong"
     private val viewModel: FragViewModel by viewModels()
 
     private lateinit var binding: FragmentBottomsheetBinding

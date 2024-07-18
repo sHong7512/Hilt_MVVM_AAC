@@ -71,6 +71,27 @@
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logDBButton" />
 
+        <Button
+            android:id="@+id/startExpireButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="기한 만료 체크"
+            android:onClick="@{ () -> mainVM.startExpireOnClick() }"
+            app:layout_constraintTop_toBottomOf="@id/logMemoryButton"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/uniqueIDButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="앱 유니크 아이디 저장 및 체크"
+            android:onClick="@{ () -> mainVM.uniqueCheckOnClick() }"
+            app:layout_constraintTop_toBottomOf="@id/startExpireButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>
